@@ -1,3 +1,4 @@
+from src.generate import generate_answer
 from src.ingest import load_data
 from src.embed import generate_embeddings, model
 from src.index import create_index, save_index, load_index
@@ -37,7 +38,13 @@ def main():
 
             results = search(q, model, index, texts)
 
-            print("\nResultados:")
+            contexts = [r[:500] for r, _ in results]
+
+            answer = generate_answer(q, contexts)
+
+            print("\nResposta:")
+            print(answer)
+            print("\nTrechos usados:")
             for r, score in results:
                 print(f"[score: {score:.2f}] {r}")
             print()
